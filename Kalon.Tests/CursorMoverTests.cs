@@ -35,12 +35,12 @@ namespace Kalon.Tests
         [InlineData(27, 83)]
         [InlineData(100, 100)]
         [InlineData(250, 400)]
-        [InlineData(400, 250)]
+        [InlineData(1000, 300)]
         public void TestMovement(int x, int y)
         {
             var point = new Point(x, y);
 
-            CursorMover.MoveCursor(point, TimeSpan.FromMilliseconds(1));
+            CursorMover.MoveCursor(point, TimeSpan.FromMilliseconds(1000));
 
             if (!User32.GetCursorPos(out var currentCursorPosition))
             {

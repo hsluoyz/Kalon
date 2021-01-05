@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Kalon.Native.PInvoke;
 
@@ -44,7 +45,19 @@ namespace Kalon
                 throw new Win32Exception();
             }
 
-            var cursorMovements = GenerateMovements(currentCursorPosition, point, (int) timeSpan.TotalMilliseconds).ToArray();
+            currentCursorPosition.X = 100;
+            currentCursorPosition.Y = 100;
+            point.X = 1000;
+            point.Y = 300;
+            var cursorMovements = GenerateMovements(currentCursorPosition, point, 100).ToArray();
+            using (StreamWriter sw = new StreamWriter("../../../aaa.txt"))
+            {
+                for (var i = 0; i < cursorMovements.Length; i++)
+                {
+                    var p = cursorMovements[i].Points.ElementAt(0);
+                    sw.WriteLine($"{{id: {i}, type: \"mousemove\", timestamp: {i * 0.03:0.00}, x: {p.X}, y: {p.Y}}},");
+                }
+            }
 
             // Perform the movements
 
@@ -161,6 +174,8 @@ namespace Kalon
 
                 var y = start.Y + arcMultiplier * (Math.Abs(end.Y - start.Y) + 50) * 0.01 * _random.Next(15, 30);
 
+                x = 500;
+                y = 50;
                 return new Point((int) x, (int) y);
             }
 
